@@ -8,8 +8,9 @@ To run the applications you first need to [download and install Python](https://
 
 Then you can use the following commands:
 
-* `python counter.py` to run a simple tally counter.
-* `python stopwatch.py` to run a simple stopwatch.
+* `python counter.py` to run a tally counter.
+* `python stopwatch.py` to run a stopwatch.
+* `python joker.py` to run an application that tell jokes.
 
 ## License
 

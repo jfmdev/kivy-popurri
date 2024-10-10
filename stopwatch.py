@@ -11,75 +11,72 @@ from datetime import datetime
 from datetime import timedelta
 from enum import Enum
 
-
 class Status(Enum):
     STOPPED = 1
     PAUSED = 2
     PLAYING = 3
 
 class MyApp(App):
-
     def build(self):
-        mainLayout = BoxLayout(padding=10)
-        mainLayout.orientation = 'vertical'
+        main_layout = BoxLayout(padding=10)
+        main_layout.orientation = 'vertical'
 
-        self.startTimestamp = None
-        self.pauseTimestamp = None
+        self.start_timestamp = None
+        self.pause_timestamp = None
         self.status = Status.STOPPED
 
         self.label = Label(text='0:00:00.000000', font_size='20sp')
-        mainLayout.add_widget(self.label)
+        main_layout.add_widget(self.label)
 
-        buttonsLayout = BoxLayout(padding=10)
-        mainLayout.add_widget(buttonsLayout)
+        buttons_layout = BoxLayout(padding=10)
+        main_layout.add_widget(buttons_layout)
 
-        self.stopButton = Button(text='')
-        buttonsLayout.add_widget(self.stopButton)
-        self.stopButton.bind(on_press=self.stopOrPause)
+        self.stop_button = Button(text='')
+        buttons_layout.add_widget(self.stop_button)
+        self.stop_button.bind(on_press=self.stop_or_pause)
 
-        self.playButton = Button(text='')
-        buttonsLayout.add_widget(self.playButton)
-        self.playButton.bind(on_press=self.playOrResume)
+        self.play_button = Button(text='')
+        buttons_layout.add_widget(self.play_button)
+        self.play_button.bind(on_press=self.play_or_resume)
 
-        self.updateButtonLabels()
+        self.update_button_labels()
 
-        self.trigger = Clock.create_trigger(self.onTrigger)
+        self.trigger = Clock.create_trigger(self.on_trigger)
 
-        return mainLayout
+        return main_layout
 
-    def onTrigger(self, *largs):
+    def on_trigger(self, *largs):
         if self.status == Status.PLAYING:
-            self.label.text = str(datetime.now() - self.startTimestamp)
+            self.label.text = str(datetime.now() - self.start_timestamp)
             self.trigger()
 
-    def playOrResume(self, value):
+    def play_or_resume(self, value):
         if self.status != Status.PLAYING:
             if self.status == Status.STOPPED:
-                self.startTimestamp = datetime.now()
+                self.start_timestamp = datetime.now()
             elif self.status == Status.PAUSED:
-                self.startTimestamp = datetime.now() - (self.pauseTimestamp - self.startTimestamp)
+                self.start_timestamp = datetime.now() - (self.pause_timestamp - self.start_timestamp)
 
             self.status = Status.PLAYING
-            self.updateButtonLabels()
+            self.update_button_labels()
             self.trigger()
 
 
-    def stopOrPause(self, value):
+    def stop_or_pause(self, value):
         if self.status == Status.PLAYING:
             self.status = Status.PAUSED
-            self.pauseTimestamp = datetime.now()
+            self.pause_timestamp = datetime.now()
         elif self.status == Status.PAUSED:
             self.status = Status.STOPPED
-            self.pauseTimestamp = None
-            self.startTimestamp = None
+            self.pause_timestamp = None
+            self.start_timestamp = None
             self.label.text = '0:00:00.000000'
 
-        self.updateButtonLabels()
+        self.update_button_labels()
 
-    def updateButtonLabels(self):
-        self.stopButton.text = 'Pause' if self.status == Status.PLAYING else 'Stop'
-        self.playButton.text = 'Resume' if self.status == Status.PAUSED else 'Play'
+    def update_button_labels(self):
+        self.stop_button.text = 'Pause' if self.status == Status.PLAYING else 'Stop'
+        self.play_button.text = 'Resume' if self.status == Status.PAUSED else 'Play'
 
 if __name__ == '__main__':
     MyApp().run()
-

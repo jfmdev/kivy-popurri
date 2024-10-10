@@ -7,36 +7,34 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 
 class MyApp(App):
-
     def build(self):
-        mainLayout = BoxLayout(padding=10)
-        mainLayout.orientation = 'vertical'
+        main_layout = BoxLayout(padding=10)
+        main_layout.orientation = 'vertical'
 
         self.count = 0
         self.label = Label(text='Count: 0', font_size='20sp')
-        mainLayout.add_widget(self.label)
+        main_layout.add_widget(self.label)
 
-        buttonsLayout = BoxLayout(padding=10)
-        mainLayout.add_widget(buttonsLayout)
+        buttons_layout = BoxLayout(padding=10)
+        main_layout.add_widget(buttons_layout)
 
-        plusButton = Button(text='Increase (+)')
-        buttonsLayout.add_widget(plusButton)
-        plusButton.bind(on_press=self.increaseCount)
+        plus_button = Button(text='Increase (+)')
+        buttons_layout.add_widget(plus_button)
+        plus_button.bind(on_press=self.increase_count)
 
-        minusButton = Button(text='Decrease (-)')
-        buttonsLayout.add_widget(minusButton)
-        minusButton.bind(on_press=self.decreaseCount)
+        minus_button = Button(text='Decrease (-)')
+        buttons_layout.add_widget(minus_button)
+        minus_button.bind(on_press=self.decrease_count)
 
-        return mainLayout
+        return main_layout
 
-    def decreaseCount(self, value):
+    def decrease_count(self, value):
         self.count = self.count - 1
         self.label.text = 'Count: ' + str(self.count)
 
-    def increaseCount(self, value):
+    def increase_count(self, value):
         self.count = self.count + 1
         self.label.text = 'Count: ' + str(self.count)
 
 if __name__ == '__main__':
     MyApp().run()
-
